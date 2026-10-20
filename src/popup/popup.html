@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Auto LCMS Stealth v2</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-shell">
+    <!-- ═══════════ HEADER ═══════════ -->
+    <div class="header">
+      <div class="header-brand">
+        <span class="brand-icon">👑</span>
+        <div>
+          <h3>AUTO LCMS <span class="gold">STEALTH</span></h3>
+          <p class="sub">Chụp → Giải AI → Điền Tự Động</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="ver-tag">v2</span>
+        <button class="icon-btn" id="btn-guide" title="Hướng Dẫn Sử Dụng">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════ WORKFLOW STEPS ═══════════ -->
+    <div class="steps-bar">
+      <button class="step active" data-step="1">
+        <span class="step-num">1</span>
+        <span class="step-label">📸 Chụp</span>
+      </button>
+      <div class="step-line"></div>
+      <button class="step" data-step="2">
+        <span class="step-num">2</span>
+        <span class="step-label">🤖 AI</span>
+      </button>
+      <div class="step-line"></div>
+      <button class="step" data-step="3">
+        <span class="step-num">3</span>
+        <span class="step-label">⚡ Điền</span>
+      </button>
+    </div>
+
+    <!-- ═══════════ STEP 1: SCREENSHOT ═══════════ -->
+    <div class="tab-pane active" id="pane-1">
+      <div class="preview-box" id="preview-box">
+        <div class="preview-placeholder" id="preview-placeholder">
+          <span style="font-size:32px;opacity:0.4;">📸</span>
+          <p>Chụp toàn trang quiz để lưu và gửi cho AI</p>
+        </div>
+        <img id="preview-img" class="preview-img" style="display:none;" />
+      </div>
+
+      <button class="btn btn-gold btn-full" id="btn-capture">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+        CHỤP TOÀN TRANG
+      </button>
+
+      <div class="capture-progress" id="capture-progress" style="display:none;">
+        <div class="progress-label">
+          <span id="cap-status">Đang chụp...</span>
+          <span id="cap-count">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="cap-fill"></div></div>
+      </div>
+
+      <div class="format-row" id="format-row" style="display:none;">
+        <label class="format-label">Định dạng:</label>
+        <div class="format-options">
+          <button class="fmt-btn active" data-fmt="png">PNG</button>
+          <button class="fmt-btn" data-fmt="jpeg">JPG</button>
+          <button class="fmt-btn" data-fmt="pdf">PDF</button>
+        </div>
+        <button class="btn btn-emerald btn-save" id="btn-save">
+          💾 Lưu File
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════ STEP 2: AI PLATFORM ═══════════ -->
+    <div class="tab-pane" id="pane-2">
+      <!-- Direct Gemini Solver (Optional 1-Click) -->
+      <div class="gemini-solver-box">
+        <div class="gemini-solver-header">
+          <span class="gold-icon">✨</span>
+          <div class="gemini-solver-title">
+            <strong>Gemini AI Auto-Solver</strong>
+            <span class="badge-free">1-Click Tự Động</span>
+          </div>
+        </div>
+        <div class="model-select-row">
+          <label for="gemini-model-select" class="model-select-label">Mô hình AI:</label>
+          <select id="gemini-model-select" class="gemini-model-select">
+            <option value="gemini-4-argon" selected>👑 Gemini 4 Argon (Siêu trí tuệ SOTA - Chính xác nhất có thể)</option>
+            <option value="gemini-4-ultra">⚡ Gemini 4 Ultra (Tư duy sâu đa phương thức)</option>
+            <option value="gemini-3.1-pro">🧠 Gemini 3.1 Pro (Ổn định cao)</option>
+            <option value="gemini-2.5-flash">🚀 Gemini 2.5 Flash (Siêu tốc)</option>
+            <option value="gemini-1.5-pro">🛡️ Gemini 1.5 Pro (Dự phòng)</option>
+          </select>
+        </div>
+        <div class="api-key-row">
+          <input type="password" id="gemini-api-key" placeholder="Nhập Gemini API Key (aistudio.google.com)" />
+          <button class="btn btn-secondary btn-icon-only" id="btn-save-key" title="Lưu API Key">💾</button>
+        </div>
+        <button class="btn btn-gold btn-full btn-gemini-solve" id="btn-gemini-solve">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          ✨ GIẢI BẰNG GEMINI & ĐIỀN TỰ ĐỘNG
+        </button>
+        <div class="gemini-status" id="gemini-status" style="display:none;"></div>
+      </div>
+
+      <p class="section-hint">Hoặc mở nhanh nền tảng AI web suy luận cao bên dưới:</p>
+
+      <div class="ai-grid">
+        <a class="ai-card ai-recommended" href="https://claude.ai/new" target="_blank" rel="noopener">
+          <div class="ai-icon">◈</div>
+          <div class="ai-name">Claude</div>
+          <div class="ai-model">Opus 5.5 / Sonnet 5.5</div>
+          <span class="ai-badge badge-purple">⭐ Top 1 Logic</span>
+        </a>
+        <a class="ai-card ai-recommended" href="https://chatgpt.com/" target="_blank" rel="noopener">
+          <div class="ai-icon">◉</div>
+          <div class="ai-name">ChatGPT</div>
+          <div class="ai-model">GPT-6</div>
+          <span class="ai-badge badge-gold">⭐ Khuyên dùng</span>
+        </a>
+        <a class="ai-card ai-recommended" href="https://gemini.google.com/app" target="_blank" rel="noopener">
+          <div class="ai-icon">✦</div>
+          <div class="ai-name">Gemini</div>
+          <div class="ai-model">4 Argon / Ultra</div>
+          <span class="ai-badge badge-gold">⭐ Khuyên dùng</span>
+        </a>
+        <a class="ai-card" href="https://chat.deepseek.com/" target="_blank" rel="noopener">
+          <div class="ai-icon">🐋</div>
+          <div class="ai-name">DeepSeek</div>
+          <div class="ai-model">R2 / R1 (Reasoning)</div>
+          <span class="ai-badge badge-emerald">🔥 Miễn phí</span>
+        </a>
+        <a class="ai-card" href="https://aistudio.google.com/prompts/new_chat" target="_blank" rel="noopener">
+          <div class="ai-icon">🔬</div>
+          <div class="ai-name">AI Studio</div>
+          <div class="ai-model">Gemini 4 Argon</div>
+          <span class="ai-badge badge-cyan">🔬 Max Context</span>
+        </a>
+        <a class="ai-card" href="https://grok.com/" target="_blank" rel="noopener">
+          <div class="ai-icon">✖</div>
+          <div class="ai-name">Grok</div>
+          <div class="ai-model">Grok 4 (Thinking)</div>
+          <span class="ai-badge badge-blue">🚀 xAI SOTA</span>
+        </a>
+      </div>
+
+      <div class="prompt-section">
+        <label class="format-label">Prompt suy luận chuẩn SOTA (dán kèm ảnh vào AI):</label>
+        <div class="prompt-box" id="prompt-box">Bạn là chuyên gia giải đề thi trắc nghiệm học thuật với độ chính xác cao nhất có thể.
+Nhiệm vụ: Phân tích kỹ ảnh đề thi, suy luận từng câu (ngữ pháp, từ vựng, ngữ cảnh logic) để chọn đáp án đúng nhất.
+
+Sau khi suy nghĩ kỹ, xuất ra DUY NHẤT một bảng Markdown:
+| Câu | Đáp án | Nguyên văn đáp án |
+| --- | ------ | ----------------- |
+| 1   | C      | restore           |
+
+Quy tắc bắt buộc:
+1. Cột "Đáp án" chỉ ghi 1 chữ cái in hoa (A, B, C, D hoặc E).
+2. Cột "Nguyên văn đáp án" copy CHÍNH XÁC NGUYÊN VĂN từ ngữ của lựa chọn đúng (để extension tự động nhận diện kháng đảo đề).
+3. Tuyệt đối không thêm lời chào, giải thích ngoài bảng.</div>
+        <button class="btn btn-secondary btn-sm" id="btn-copy-prompt">📋 Copy Prompt</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ STEP 3: PASTE & FILL ═══════════ -->
+    <div class="tab-pane" id="pane-3">
+      <div class="shield-banner">
+        <span>🛡️</span>
+        <p><strong>Khóa an toàn:</strong> Tự động đối chiếu chống đảo đề chính xác nhất có thể. <strong>TUYỆT ĐỐI KHÔNG tự nộp bài.</strong></p>
+      </div>
+
+      <div class="speed-row">
+        <label class="format-label">Tốc độ:</label>
+        <div class="speed-options">
+          <button class="speed-btn active" data-speed="burst" id="btn-speed-burst">⚡ Siêu Tốc (0.02s)</button>
+          <button class="speed-btn" data-speed="stealth" id="btn-speed-stealth">🛡️ Stealth (Người Thật)</button>
+        </div>
+      </div>
+
+      <label class="format-label">Dán kết quả AI vào đây:</label>
+      <textarea id="fill-input" placeholder="Dán đáp án từ AI (Markdown, Excel, danh sách... mọi định dạng đều được tự động bóc tách)."></textarea>
+
+      <div class="action-row">
+        <button class="btn btn-gold btn-flex" id="btn-fill">⚡ ĐIỀN ĐÁP ÁN</button>
+        <button class="btn btn-secondary btn-flex-sm" id="btn-paste-fill">📋 Dán & Điền</button>
+      </div>
+
+      <div class="status-box" id="fill-status">Sẵn sàng điền trên tab LCMS hiện tại.</div>
+    </div>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <div class="footer">
+      <span>Phím tắt: <kbd>Alt+A</kbd></span>
+      <a href="https://mikesmart.vercel.app/" target="_blank" rel="noopener" class="footer-link">🌐 <strong>MikeSmart</strong></a>
+    </div>
+  </div>
+
+  <!-- ═══════════ GUIDE MODAL (SOP 10/2026 FULL VIEWPORT DOCKED) ═══════════ -->
+  <div class="guide-overlay" id="guide-overlay">
+    <div class="guide-modal">
+      <!-- Pinned Header -->
+      <div class="guide-header">
+        <div class="guide-header-title">
+          <span class="guide-icon">📖</span>
+          <div>
+            <h3>QUY TRÌNH CHUẨN SOP <span class="gold">10/2026</span></h3>
+            <span class="guide-badge-sop">⭐ SOTA TÀNG HÌNH</span>
+          </div>
+        </div>
+        <div class="guide-header-actions">
+          <button class="guide-toggle-all-btn" id="btn-guide-toggle-all" title="Thu gọn / Mở rộng toàn bộ">
+            <span id="guide-toggle-icon">↕️</span> <span id="guide-toggle-text">Mở tất cả</span>
+          </button>
+          <button class="icon-btn" id="btn-guide-close" title="Đóng hướng dẫn (Esc)">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Jump Rail -->
+      <div class="guide-nav-rail">
+        <button class="nav-chip" data-target="gstep-1">1. Mở Quiz</button>
+        <button class="nav-chip" data-target="gstep-2">2. Chụp</button>
+        <button class="nav-chip" data-target="gstep-3">3. AI SOTA</button>
+        <button class="nav-chip" data-target="gstep-4">4. Copy</button>
+        <button class="nav-chip" data-target="gstep-5">5. Điền</button>
+        <button class="nav-chip" data-target="gstep-6">6. Tự Nộp</button>
+        <button class="nav-chip chip-highlight" data-target="gtips">💎 Mẹo</button>
+      </div>
+
+      <!-- Scrollable Body with Accordion Steps -->
+      <div class="guide-body" id="guide-body">
+        <div class="sop-overview-banner">
+          <span class="banner-sparkle">⚡</span>
+          <p><strong>Chuẩn SOP 10/2026:</strong> Bấm vào từng bước để xem chi tiết. Toàn bộ quy trình tự động hóa khép kín, chống đảo đề và khóa an toàn 100%.</p>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="guide-step collapsed" id="gstep-1" data-step="1">
+          <div class="gs-header" role="button" tabindex="0">
+            <div class="gs-num">1</div>
+            <div class="gs-title-wrap">
+              <h4>🌐 Bước 1: Mở Bài Quiz LCMS</h4>
+              <span class="gs-brief">lcms.ntt.edu.vn → Attempt quiz</span>
+            </div>
+            <span class="gs-chevron">▼</span>
+          </div>
+          <div class="gs-content">
+            <p>1. Đăng nhập <strong>lcms.ntt.edu.vn</strong> bằng tài khoản sinh viên NTTU.</p>
+            <p>2. Chọn khóa học → vào bài kiểm tra Quiz trắc nghiệm → Bấm <em>"Attempt quiz"</em> (hoặc <em>"Re-attempt quiz"</em>) để vào giao diện làm bài.</p>
+            <p class="gs-note">💡 <strong>Phím tắt:</strong> Bạn có thể bấm <kbd>Alt+A</kbd> bất kỳ lúc nào để bật/tắt thanh điều khiển Stealth ngay trên trang thi.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="guide-step collapsed" id="gstep-2" data-step="2">
+          <div class="gs-header" role="button" tabindex="0">
+            <div class="gs-num">2</div>
+            <div class="gs-title-wrap">
+              <h4>📸 Bước 2: Chụp Toàn Trang Quiz</h4>
+              <span class="gs-brief">Scroll & Stitch toàn bộ câu hỏi xuất PNG/PDF</span>
+            </div>
+            <span class="gs-chevron">▼</span>
+          </div>
+          <div class="gs-content">
+            <p>1. Bấm icon Extension trên thanh công cụ trình duyệt → Chọn Tab <strong>📸 Chụp</strong>.</p>
+            <p>2. Bấm nút <strong>"CHỤP TOÀN TRANG"</strong>. Extension sẽ tự động cuộn từng pixel và ghép ảnh toàn bộ bài thi cực kỳ mượt mà.</p>
+            <p>3. Chọn định dạng <strong>PNG</strong> (mặc định - khuyên dùng vì ảnh sắc nét nhất cho AI đọc chữ) hoặc <strong>JPG</strong> / <strong>PDF</strong> → Bấm <em>"💾 Lưu File"</em>.</p>
+            <p class="gs-note">⭐ <strong>SOP 10/2026:</strong> Ảnh PNG xuất ra giữ nguyên tỷ lệ 100%, khử mờ cho AI nhận dạng bảng câu hỏi chuẩn xác nhất có thể.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="guide-step collapsed" id="gstep-3" data-step="3">
+          <div class="gs-header" role="button" tabindex="0">
+            <div class="gs-num">3</div>
+            <div class="gs-title-wrap">
+              <h4>🤖 Bước 3: Gửi Cho AI Suy Luận SOTA</h4>
+              <span class="gs-brief">Gemini 4 Argon / Claude Opus 5.5 / GPT-6</span>
+            </div>
+            <span class="gs-chevron">▼</span>
+          </div>
+          <div class="gs-content">
+            <p>Chuyển sang Tab <strong>🤖 AI</strong> trong Extension với 2 lựa chọn tối ưu:</p>
+            <p>• <strong>Cách 1 (1-Click Tự Động):</strong> Nhập Gemini API Key tại ô <em>"Gemini AI Auto-Solver"</em> → Chọn model <strong>Gemini 4 Argon</strong> hoặc <strong>Gemini 4 Ultra / 3.1 Pro</strong> → Bấm <em>"✨ GIẢI BẰNG GEMINI & ĐIỀN TỰ ĐỘNG"</em>.</p>
+            <p>• <strong>Cách 2 (Web AI):</strong> Bấm vào các thẻ AI được tuyển chọn (<strong>Gemini 4 Argon</strong>, <strong>Claude Opus 5.5</strong>, <strong>ChatGPT GPT-6</strong>, <strong>DeepSeek R2</strong>, <strong>AI Studio</strong>) → Bấm <em>"📋 Copy Prompt"</em> → Dán prompt vào AI kèm upload ảnh quiz vừa chụp.</p>
+            <p class="gs-note">👑 <strong>Độ chính xác cao nhất:</strong> Gemini 4 Argon và Claude Opus 5.5 cho kết quả giải suy luận ngữ cảnh vượt trội và chính xác nhất có thể.</p>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="guide-step collapsed" id="gstep-4" data-step="4">
+          <div class="gs-header" role="button" tabindex="0">
+            <div class="gs-num">4</div>
+            <div class="gs-title-wrap">
+              <h4>📋 Bước 4: Copy Bảng Đáp Án AI</h4>
+              <span class="gs-brief">Chọn bảng Markdown → Bấm Ctrl+C</span>
+            </div>
+            <span class="gs-chevron">▼</span>
+          </div>
+          <div class="gs-content">
+            <p>1. Sau vài giây suy luận, AI sẽ trả về bảng đáp án Markdown chứa 3 cột: <code>| Câu | Đáp án | Nguyên văn đáp án |</code>.</p>
+            <p>2. Dùng chuột bôi đen toàn bộ bảng (hoặc bấm nút Copy của chat AI) → Bấm <kbd>Ctrl+C</kbd>.</p>
+            <p class="gs-note">💡 <strong>Không lo định dạng:</strong> Cho dù AI trả lời dạng bảng Markdown, văn bản Excel, danh sách số <code>1. C</code> hay chuỗi rút gọn <code>1C 2A 3B</code>, Universal Ultra Parser đều tự động nhận diện 100%.</p>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="guide-step collapsed" id="gstep-5" data-step="5">
+          <div class="gs-header" role="button" tabindex="0">
+            <div class="gs-num">5</div>
+            <div class="gs-title-wrap">
+              <h4>⚡ Bước 5: Dán & Stealth Điền Tự Động</h4>
+              <span class="gs-brief">Universal Parser & Kháng đảo đề thông minh</span>
+            </div>
+            <span class="gs-chevron">▼</span>
+          </div>
+          <div class="gs-content">
+            <p>1. Quay lại Extension → Chuyển sang Tab <strong>⚡ Điền</strong>.</p>
+            <p>2. Chọn tốc độ điền mong muốn:</p>
+            <p style="padding-left:10px;">• <strong>⚡ Siêu Tốc (0.02s):</strong> Điền đồng loạt tức thì toàn bộ bài kiểm tra.</p>
+            <p style="padding-left:10px;">• <strong>🛡️ Stealth (Người Thật):</strong> Tự động cuộn và click từng câu với khoảng chờ ngẫu nhiên 0.8s – 2.5s như người thật làm bài.</p>
+            <p>3. Bấm nút <strong>"📋 Dán & Điền"</strong> (hoặc dán vào ô rồi bấm <em>"⚡ ĐIỀN ĐÁP ÁN"</em>).</p>
+            <p class="gs-note">🛡️ <strong>Kháng đảo đề:</strong> Extension tự động đối chiếu cả ký tự (A/B/C) lẫn nội dung nguyên văn câu trả lời (Text Fuzzy Match) để đảm bảo không bị chọn nhầm khi hệ thống tráo thứ tự lựa chọn.</p>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="guide-step collapsed" id="gstep-6" data-step="6">
+          <div class="gs-header" role="button" tabindex="0">
+            <div class="gs-num">6</div>
+            <div class="gs-title-wrap">
+              <h4>✅ Bước 6: Tự Tay Kiểm Tra & Nộp Bài</h4>
+              <span class="gs-brief">Khóa an toàn 100% — Tuyệt đối không tự nộp</span>
+            </div>
+            <span class="gs-chevron">▼</span>
+          </div>
+          <div class="gs-content">
+            <p>1. Cuộn lại một lượt toàn trang Quiz trên LCMS để kiểm tra các đáp án đã được chọn đúng theo ý bạn.</p>
+            <p>2. Khi đã hoàn toàn an tâm, <strong>tự tay bạn</strong> bấm vào nút <em>"Finish attempt..."</em> trên trang LCMS, sau đó bấm <em>"Submit all and finish"</em> để nộp bài.</p>
+            <p class="gs-note gs-danger">🔒 <strong>Khóa an toàn cốt lõi:</strong> Extension TUYỆT ĐỐI KHÔNG BAO GIỜ tự bấm nộp bài để đảm bảo an toàn tuyệt đối 100% cho sinh viên trước hệ thống giám sát của trường.</p>
+          </div>
+        </div>
+
+        <div class="guide-divider"></div>
+
+        <!-- Tips Section -->
+        <div class="guide-step collapsed guide-tips-step" id="gtips" data-step="tips">
+          <div class="gs-header" role="button" tabindex="0">
+            <div class="gs-num gs-num-tips">💎</div>
+            <div class="gs-title-wrap">
+              <h4>💎 Mẹo Pro & Kỹ Thuật Tàng Hình</h4>
+              <span class="gs-brief">Shadow DOM, Anti-Cheat, Phím tắt Alt+A</span>
+            </div>
+            <span class="gs-chevron">▼</span>
+          </div>
+          <div class="gs-content">
+            <ul class="sop-tips-list">
+              <li><strong>Phím tắt nhanh:</strong> Bấm <kbd>Alt+A</kbd> trên trang Moodle để mở bảng điều khiển Stealth trực tiếp mà không cần mở popup.</li>
+              <li><strong>Bài thi nhiều trang:</strong> Nếu Quiz chia thành nhiều trang (Next page), hãy thực hiện lặp lại Bước 2 → Bước 5 cho từng trang.</li>
+              <li><strong>Bảo vệ tàng hình 100%:</strong> Giao diện chèn vào trang sử dụng <code>Closed Shadow DOM</code>, script chống gian lận của Moodle hoàn toàn không thể truy xuất hay nhận biết extension.</li>
+              <li><strong>Tương thích đa trình duyệt:</strong> Hoạt động mượt mà trên Chrome, Microsoft Edge, Cốc Cốc, Brave và các trình duyệt Chromium.</li>
+              <li><strong>Kênh phát hành:</strong> Truy cập <a href="https://mikesmart.vercel.app/" target="_blank" rel="noopener" class="guide-link">mikesmart.vercel.app</a> để cập nhật phiên bản SOTA mới nhất.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pinned Footer with Scroll Navigation & Confirm Button -->
+      <div class="guide-footer">
+        <div class="guide-scroll-controls">
+          <button class="btn-scroll-nav" id="btn-scroll-top" title="Tua lên đầu">
+            ⬆️ Lên đỉnh
+          </button>
+          <button class="btn-scroll-nav" id="btn-scroll-bottom" title="Tua xuống cuối">
+            ⬇️ Xuống đáy
+          </button>
+        </div>
+        <button class="btn btn-gold btn-guide-confirm" id="btn-guide-confirm">
+          ✅ ĐÃ HIỂU & ĐÓNG
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
